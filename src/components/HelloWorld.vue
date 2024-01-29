@@ -1,69 +1,29 @@
 <template>
   <v-container class="fill-height">
     <v-responsive class="align-center text-center fill-height">
-      <v-img height="300" src="@/assets/logo.svg" />
 
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+      <v-col class="d-flex justify-center">
+        <v-color-picker
+          v-model="selectedColor"
+          show-swatches
+          swatches-max-height="400px"
+        ></v-color-picker>
+      </v-col>
 
-      <h1 class="text-h2 font-weight-bold">Vuetify</h1>
+      <v-btn class="my-4" block @click="selectedColor = '#ff00ffff'">hexa</v-btn>
+      <v-btn class="my-4" block @click="selectedColor = { r: 255, g: 0, b: 255, a: 1 }">rgba</v-btn>
 
-      <div class="py-14" />
-
-      <v-row class="d-flex align-center justify-center">
-        <v-col cols="auto">
-          <v-btn
-            href="https://vuetifyjs.com/components/all/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-view-dashboard"
-              size="large"
-              start
-            />
-
-            Components
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            color="primary"
-            href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon
-              icon="mdi-speedometer"
-              size="large"
-              start
-            />
-
-            Get Started
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            href="https://community.vuetifyjs.com/"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon
-              icon="mdi-account-group"
-              size="large"
-              start
-            />
-
-            Community
-          </v-btn>
+      <v-row class="select-color">
+        <v-col>
+          <v-card :color="selectedColor" class="pa-5">
+            <v-subheader>Selected Color</v-subheader>
+            <v-divider></v-divider>
+            <v-row>
+              <v-col>
+                <div>{{ selectedColor }}</div>
+              </v-col>
+            </v-row>
+          </v-card>
         </v-col>
       </v-row>
     </v-responsive>
@@ -71,5 +31,35 @@
 </template>
 
 <script setup>
-  //
+  import { ref } from 'vue';
+
+  const selectedColor = ref('rgba(0, 255, 0, 1)');
+
+  function hexToRGBA(hex) {
+    const bigint = parseInt(hex.substring(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    // 알파 값을 추출 (만약 없으면 기본값으로 1 사용)
+    const a = hex.length === 9 ? Math.round(((bigint >> 24) & 255) / 255 * 100) / 100 : 1;
+
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
+
+  const color1 = hexToRGBA("#0D3D0D"); // 13 ,61, 13, 1
+  const color2 = hexToRGBA("#0D3D0D5C"); // 13, 61, 13, 0.36
+
+  console.log(color1); // rgba(38, 158, 38, 1)
+  console.log(color2); // rgba(38, 158, 38, 0.67)
+
 </script>
+
+<style scoped>
+.color-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+</style>
