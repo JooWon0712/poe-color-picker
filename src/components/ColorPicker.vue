@@ -6,7 +6,7 @@
         <div class="VisualUtilityItemDiv"
           style="text-align: center; align-items: center; justify-content: center; margin: 40px;"
           v-bind:style="{backgroundColor: color1, border: '2px solid '+color2, color: color3}">
-          <label class="VisualUtilityItemLabel">Chaos Orb</label>
+          <label class="VisualUtilityItemLabel">칼란드라의 거울</label>
         </div>
       </v-row>
     </v-container>
