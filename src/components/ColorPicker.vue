@@ -1,6 +1,6 @@
 <template>
 
-  <v-app id="inspire">
+  <v-app>
     <v-container>
       <v-row style="text-align: center; justify-content: center;">
         <div class="VisualUtilityItemDiv"
@@ -15,16 +15,15 @@
       <v-row>
         <v-col>
           <div class="text-center">백그라운드 컬러</div>
-          <v-text-field v-model="color1" v-mask="mask1" hide-details class="ma-0 pa-0" solo>
+          <v-text-field v-model="color1" v-mask="mask" hide-details class="ma-0 pa-0" solo>
             <template v-slot:append>
-              
               <v-menu v-model="menu1" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                 <template v-slot:activator="{ on }">
                   <div :style="swatchStyle1" v-on="on" />
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color1" flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color1" mode="rgba" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -33,7 +32,7 @@
         </v-col>
         <v-col>
           <div class="text-center">테두리 컬러</div>
-          <v-text-field v-model="color2" v-mask="mask2" hide-details class="ma-0 pa-0" solo>
+          <v-text-field v-model="color2" v-mask="mask" hide-details class="ma-0 pa-0" solo>
             <template v-slot:append>
               <v-menu v-model="menu2" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                 <template v-slot:activator="{ on }">
@@ -41,7 +40,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color2" flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color2" mode="rgba" hide-mode-switch flat show-swatches/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -50,16 +49,15 @@
         </v-col>
         <v-col>
           <div class="text-center">폰트 컬러</div>
-          <v-text-field v-model="color3" v-mask="mask3" hide-details class="ma-0 pa-0" solo>
+          <v-text-field v-model="color3" v-mask="mask" hide-details class="ma-0 pa-0" solo>
             <template v-slot:append>
-              
               <v-menu v-model="menu3" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                 <template v-slot:activator="{ on }">
                   <div :style="swatchStyle3" v-on="on" />
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color3" flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color3" mode="rgba" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -69,6 +67,16 @@
       </v-row>
       <v-row style="display: flex; text-align: center; justify-content: center;">
         <v-btn @click="copyColor()">복사</v-btn>
+      </v-row>
+      <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
+        <p style="text-align: left;">
+          setTextColor {{ hexToRgba(color3) }}
+          <br/>
+          SetBorderColor {{ hexToRgba(color2) }}
+          <br/>
+          SetBackgroundColor {{ hexToRgba(color1) }}
+        </p>
+        
       </v-row>
     </v-container>
     
@@ -83,12 +91,10 @@ export default {
 	// SetBackgroundColor 255 255 255 255
   data() {
     return {
-      color1: '#F99619',
-      color2: '#000000',
+      color1: '#F99619FF',
+      color2: '#000000FF',
       color3: '#000000FF',
-      mask1: '!#XXXXXXXX',
-      mask2: '!#XXXXXXXX',
-      mask3: '!#XXXXXXXX',
+      mask: '!#XXXXXXXX',
       menu1: false,
       menu2: false,
       menu3: false
@@ -99,6 +105,18 @@ export default {
       console.log("test1", this.color1)
       console.log("test2", this.color2)
       console.log("test3", this.color3)
+    },
+    hexToRgba(hex) {
+      // Hex 값을 RGBA로 변환
+      hex = hex.replace(/^#/, '');
+
+      const bigint = parseInt(hex, 16);
+      const r = (bigint >> 24) & 255;
+      const g = (bigint >> 16) & 255;
+      const b = (bigint >> 8) & 255;
+      const a = (bigint & 255) / 255;
+
+      return `${r} ${g} ${b} ${a.toFixed(2)}`;
     }
   },
   computed: {
