@@ -23,7 +23,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color1" mode="rgba" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color1" mode="hexa" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -40,7 +40,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color2" mode="rgba" hide-mode-switch flat show-swatches/>
+                    <v-color-picker v-model="color2" mode="hexa" hide-mode-switch flat show-swatches/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -57,7 +57,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color3" mode="rgba" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color3" mode="hexa" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
