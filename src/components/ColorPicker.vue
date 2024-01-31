@@ -23,7 +23,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color1" mode="hexa" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color1" mode="hexa" flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -40,7 +40,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color2" mode="hexa" hide-mode-switch flat show-swatches/>
+                    <v-color-picker v-model="color2" mode="hexa" flat show-swatches/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -57,7 +57,7 @@
                 </template>
                 <v-card>
                   <v-card-text class="pa-0">
-                    <v-color-picker v-model="color3" mode="hexa" hide-mode-switch flat show-swatches swatches-max-height="400px"/>
+                    <v-color-picker v-model="color3" mode="hexa" flat show-swatches swatches-max-height="400px"/>
                   </v-card-text>
                 </v-card>
               </v-menu>
@@ -70,11 +70,11 @@
       </v-row> -->
       <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
         <p style="text-align: left; white-space: pre;">
-          &nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{ hexToRgba(color3) }}
+          &nbsp;&nbsp;&nbsp;SetTextColor {{ hexToRgba(color3) }}
           <br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{ hexToRgba(color2) }}
+          &nbsp;&nbsp;&nbsp;SetBorderColor {{ hexToRgba(color2) }}
           <br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{ hexToRgba(color1) }}
+          &nbsp;&nbsp;&nbsp;SetBackgroundColor {{ hexToRgba(color1) }}
         </p>
         
       </v-row>
