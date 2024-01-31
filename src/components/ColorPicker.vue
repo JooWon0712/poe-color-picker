@@ -91,10 +91,10 @@ export default {
 	// SetBackgroundColor 20 110 220
   data() {
     return {
-      color1: '#F99619FF',
-      color2: '#000000FF',
-      color3: '#000000FF',
-      mask: '!#XXXXXXXX',
+      color1: '#F99619',
+      color2: '#000000',
+      color3: '#000000',
+      mask: '!#XXXXXX',
       menu1: false,
       menu2: false,
       menu3: false
@@ -107,16 +107,10 @@ export default {
       console.log("test3", this.color3)
     },
     hexToRgba(hex) {
-      // Hex 값을 RGBA로 변환
-      hex = hex.replace(/^#/, '');
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
 
-      const bigint = parseInt(hex, 16);
-      const r = (bigint >> 24) & 255;
-      const g = (bigint >> 16) & 255;
-      const b = (bigint >> 8) & 255;
-      //const a = (bigint & 255) / 255;
-
-      //return `${r} ${g} ${b} ${a.toFixed(2)}`;
       return `${r} ${g} ${b} 255 #${hex}`;
     }
   },
