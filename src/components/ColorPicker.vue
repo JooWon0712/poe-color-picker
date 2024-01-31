@@ -69,14 +69,7 @@
         <v-btn @click="copyColor()">복사</v-btn>
       </v-row> -->
       <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-        <p style="text-align: left; white-space: pre;">
-          &nbsp;&nbsp;&nbsp;SetTextColor {{ hexToRgba(color3) }}
-          <br/>
-          &nbsp;&nbsp;&nbsp;SetBorderColor {{ hexToRgba(color2) }}
-          <br/>
-          &nbsp;&nbsp;&nbsp;SetBackgroundColor {{ hexToRgba(color1) }}
-        </p>
-        
+        <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(color3)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(color2)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(color1)}}</p>
       </v-row>
     </v-container>
     
@@ -111,7 +104,7 @@ export default {
       const g = parseInt(hex.slice(3, 5), 16);
       const b = parseInt(hex.slice(5, 7), 16);
 
-      return `${r} ${g} ${b} 255 #${hex}`;
+      return `${r} ${g} ${b} 255 ${hex}`;
     }
   },
   computed: {
