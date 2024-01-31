@@ -65,16 +65,16 @@
           </v-text-field>
         </v-col>
       </v-row>
-      <v-row style="display: flex; text-align: center; justify-content: center;">
+      <!-- <v-row style="display: flex; text-align: center; justify-content: center;">
         <v-btn @click="copyColor()">복사</v-btn>
-      </v-row>
+      </v-row> -->
       <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-        <p style="text-align: left;">
-          SetTextColor {{ hexToRgba(color3) }}
+        <p style="text-align: left; white-space: pre;">
+          &nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{ hexToRgba(color3) }}
           <br/>
-          SetBorderColor {{ hexToRgba(color2) }}
+          &nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{ hexToRgba(color2) }}
           <br/>
-          SetBackgroundColor {{ hexToRgba(color1) }}
+          &nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{ hexToRgba(color1) }}
         </p>
         
       </v-row>
@@ -114,9 +114,10 @@ export default {
       const r = (bigint >> 24) & 255;
       const g = (bigint >> 16) & 255;
       const b = (bigint >> 8) & 255;
-      const a = (bigint & 255) / 255;
+      //const a = (bigint & 255) / 255;
 
-      return `${r} ${g} ${b} ${a.toFixed(2)}`;
+      //return `${r} ${g} ${b} ${a.toFixed(2)}`;
+      return `${r} ${g} ${b} 255 #${hex}`;
     }
   },
   computed: {
