@@ -70,7 +70,7 @@
       </v-row>
       <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
         <p style="text-align: left;">
-          setTextColor {{ hexToRgba(color3) }}
+          SetTextColor {{ hexToRgba(color3) }}
           <br/>
           SetBorderColor {{ hexToRgba(color2) }}
           <br/>
@@ -86,9 +86,9 @@
 
 <script>
 export default {
-	// SetTextColor 255 0 0 255
-	// SetBorderColor 255 0 0 255
-	// SetBackgroundColor 255 255 255 255
+	// SetTextColor 255 255 255 255
+	// SetBorderColor 255 255 255 255
+	// SetBackgroundColor 20 110 220
   data() {
     return {
       color1: '#F99619FF',
