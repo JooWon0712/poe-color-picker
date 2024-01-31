@@ -1,5 +1,12 @@
 # poe-color-picker
 
+## node-version
+LTS download
+See [Download](https://nodejs.org/en/download/).
+```
+v20.11.0
+```
+
 ## Project setup
 ```
 npm install
