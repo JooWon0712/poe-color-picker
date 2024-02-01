@@ -1,92 +1,117 @@
 <template>
 
-  <v-app>
-    <v-container>
-      <v-row style="text-align: center; justify-content: center;">
-        <div class="VisualUtilityItemDiv"
-          style="text-align: center; align-items: center; justify-content: center; margin: 40px;"
-          v-bind:style="{backgroundColor: color1, border: '2px solid '+color2, color: color3}">
-          <label class="VisualUtilityItemLabel">서미누기 필터</label>
-        </div>
-      </v-row>
-    </v-container>
+  <v-container>
+    <v-app>
+      <v-container class="container-custom">
+        <v-row style="text-align: center; justify-content: center;">
+          <div class="VisualUtilityItemDiv"
+            v-bind:style="{backgroundColor: poeBackgroundColor, border: '2px solid '+poeBorderColor, color: poeTextColor}">
+            <label class="VisualUtilityItemLabel">서미누기 필터</label>
+          </div>
+        </v-row>
+      </v-container>
 
-    <v-container>
-      <v-row>
-        <v-col>
-          <div class="text-center">백그라운드 컬러</div>
-          <v-text-field v-model="color1" v-mask="mask" hide-details class="ma-0 pa-0" solo>
-            <template v-slot:append>
-              <v-menu v-model="menu1" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
-                <template v-slot:activator="{ on }">
-                  <div :style="swatchStyle1" v-on="on" />
-                </template>
-                <v-card>
-                  <v-card-text class="pa-0">
-                    <v-color-picker v-model="color1" mode="hexa" flat show-swatches swatches-max-height="400px"/>
-                  </v-card-text>
-                </v-card>
-              </v-menu>
-            </template>
-          </v-text-field>
-        </v-col>
-        <v-col>
-          <div class="text-center">테두리 컬러</div>
-          <v-text-field v-model="color2" v-mask="mask" hide-details class="ma-0 pa-0" solo>
-            <template v-slot:append>
-              <v-menu v-model="menu2" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
-                <template v-slot:activator="{ on }">
-                  <div :style="swatchStyle2" v-on="on" />
-                </template>
-                <v-card>
-                  <v-card-text class="pa-0">
-                    <v-color-picker v-model="color2" mode="hexa" flat show-swatches/>
-                  </v-card-text>
-                </v-card>
-              </v-menu>
-            </template>
-          </v-text-field>
-        </v-col>
-        <v-col>
-          <div class="text-center">폰트 컬러</div>
-          <v-text-field v-model="color3" v-mask="mask" hide-details class="ma-0 pa-0" solo>
-            <template v-slot:append>
-              <v-menu v-model="menu3" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
-                <template v-slot:activator="{ on }">
-                  <div :style="swatchStyle3" v-on="on" />
-                </template>
-                <v-card>
-                  <v-card-text class="pa-0">
-                    <v-color-picker v-model="color3" mode="hexa" flat show-swatches swatches-max-height="400px"/>
-                  </v-card-text>
-                </v-card>
-              </v-menu>
-            </template>
-          </v-text-field>
-        </v-col>
-      </v-row>
-      <!-- <v-row style="display: flex; text-align: center; justify-content: center;">
-        <v-btn @click="copyColor()">복사</v-btn>
-      </v-row> -->
-      <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-        <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(color3)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(color2)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(color1)}}</p>
-      </v-row>
-    </v-container>
-    
+      <v-container class="container-custom">
+        <v-row>
+          <v-col>
+            <div class="text-center">백그라운드 컬러</div>
+            <v-text-field v-model="poeBackgroundColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+              <template v-slot:append>
+                <v-menu v-model="menu1" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                  <template v-slot:activator="{ on }">
+                    <div :style="swatchStyle1" v-on="on" />
+                  </template>
+                  <v-card>
+                    <v-card-text class="pa-0">
+                      <v-color-picker v-model="poeBackgroundColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
+              </template>
+            </v-text-field>
+          </v-col>
+          <v-col>
+            <div class="text-center">테두리 컬러</div>
+            <v-text-field v-model="poeBorderColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+              <template v-slot:append>
+                <v-menu v-model="menu2" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                  <template v-slot:activator="{ on }">
+                    <div :style="swatchStyle2" v-on="on" />
+                  </template>
+                  <v-card>
+                    <v-card-text class="pa-0">
+                      <v-color-picker v-model="poeBorderColor" mode="hexa" flat show-swatches/>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
+              </template>
+            </v-text-field>
+          </v-col>
+          <v-col>
+            <div class="text-center">폰트 컬러</div>
+            <v-text-field v-model="poeTextColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
+              <template v-slot:append>
+                <v-menu v-model="menu3" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                  <template v-slot:activator="{ on }">
+                    <div :style="swatchStyle3" v-on="on" />
+                  </template>
+                  <v-card>
+                    <v-card-text class="pa-0">
+                      <v-color-picker v-model="poeTextColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
+              </template>
+            </v-text-field>
+          </v-col>
+        </v-row>
+      </v-container>
 
-  </v-app>
+      <v-btn @click="copyToClipboard">Copy to Clipboard</v-btn>
+
+      <v-container class="container-row" style="width: 600px;">
+        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
+          <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
+          <v-textarea
+            clearable
+            auto-grow
+            clear-icon="mdi-close-circle"
+            v-model="colorText"
+            disabled
+          ></v-textarea>
+        </v-row>
+      </v-container>
+        
+      <v-container class="container-row" style="width: 600px;">
+        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
+          <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
+          <v-textarea
+            clearable
+            auto-grow
+            clear-icon="mdi-close-circle"
+            label="covert"
+            v-model="convertColorText"
+          ></v-textarea>
+        </v-row>
+      </v-container>
+    </v-app>
+  </v-container>
+
+  
+  
 </template>
 
 <script>
 export default {
-	// SetTextColor 255 255 255 255
-	// SetBorderColor 255 255 255 255
-	// SetBackgroundColor 20 110 220
+	// SetTextColor 249 150 25 255 #F99619
+	// SetBorderColor 136 44 44 255 #882C2C
+	// SetBackgroundColor 0 0 0 255 #000000
   data() {
     return {
-      color1: '#F99619',
-      color2: '#000000',
-      color3: '#000000',
+      convertColorText: '',
+      poeBackgroundColor: '#F99619',
+      poeBorderColor: '#000000',
+      poeTextColor: '#000000',
       mask: '!#XXXXXX',
       menu1: false,
       menu2: false,
@@ -94,10 +119,15 @@ export default {
     };
   },
   methods: {
-    copyColor() {
-      console.log("test1", this.color1)
-      console.log("test2", this.color2)
-      console.log("test3", this.color3)
+    copyToClipboard() {
+      // 클립보드에 복사할 텍스트
+      const _textColor = this.hexToRgba(this.poeTextColor);
+      const _bordrColor = this.hexToRgba(this.poeBorderColor);
+      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor);
+      const textToCopy = `    SetTextColor ${_textColor}\n    SetBorderColor ${_bordrColor}\n    SetBackgroundColor ${_backgroundColor}`;
+
+      // 클립보드에 텍스트 복사
+      this.$copyText(textToCopy);
     },
     hexToRgba(hex) {
       const r = parseInt(hex.slice(1, 3), 16);
@@ -105,13 +135,32 @@ export default {
       const b = parseInt(hex.slice(5, 7), 16);
 
       return `${r} ${g} ${b} 255 ${hex}`;
+    },
+    extractColors(text) {
+      const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
+      const matches = text.match(regex) || [];
+
+      this.poeTextColor = matches[0] || '';
+      this.poeBorderColor = matches[1] || '';
+      this.poeBackgroundColor = matches[2] || '';
+    }
+  },
+  watch: {
+    convertColorText(newText) {
+      this.extractColors(newText);
     }
   },
   computed: {
+    colorText() {
+      const _textColor = this.hexToRgba(this.poeTextColor);
+      const _bordrColor = this.hexToRgba(this.poeBorderColor);
+      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor);
+      return `SetTextColor ${_textColor}\nSetBorderColor ${_bordrColor}\nSetBackgroundColor ${_backgroundColor}`;
+    },
     swatchStyle1() {
-      const { color1, menu1 } = this
+      const { poeBackgroundColor, menu1 } = this
       return {
-        backgroundColor: color1,
+        backgroundColor: poeBackgroundColor,
         cursor: 'pointer',
         height: '30px',
         width: '30px',
@@ -120,9 +169,9 @@ export default {
       }
     },
     swatchStyle2() {
-      const { color2, menu2 } = this
+      const { poeBorderColor, menu2 } = this
       return {
-        backgroundColor: color2,
+        backgroundColor: poeBorderColor,
         cursor: 'pointer',
         height: '30px',
         width: '30px',
@@ -131,9 +180,9 @@ export default {
       }
     },
     swatchStyle3() {
-      const { color3, menu3 } = this
+      const { poeTextColor, menu3 } = this
       return {
-        backgroundColor: color3,
+        backgroundColor: poeTextColor,
         cursor: 'pointer',
         height: '30px',
         width: '30px',
@@ -146,13 +195,27 @@ export default {
 </script>
 
 <style>
+  
+  .container {
+    max-width: 400px;
+    justify-content: center;
+    display: flex;
+    margin: 40px;
+  }
+
+  .container-row {
+    max-width: 250px;
+    justify-content: center;
+    display: flex;
+    margin: 0px 40px;
+  }
+
  .VisualUtilityItemDiv {
     display: inline-flex;
     background-color: #adff2f;
     border: 1px solid pink;
-    padding: 5px;
+    padding: 10px;
     position: relative;
-    top: 40%;
     text-align: center;
     font-family: GeneralFont;
  }
