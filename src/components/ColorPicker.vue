@@ -89,8 +89,21 @@
             clearable
             auto-grow
             clear-icon="mdi-close-circle"
-            label="covert"
-            v-model="convertColorText"
+            label="hex covert"
+            v-model="convertHexColorText"
+          ></v-textarea>
+        </v-row>
+      </v-container>
+
+      <v-container class="container-row" style="width: 600px;">
+        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
+          <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
+          <v-textarea
+            clearable
+            auto-grow
+            clear-icon="mdi-close-circle"
+            label="rgb covert"
+            v-model="convertRgbColorText"
           ></v-textarea>
         </v-row>
       </v-container>
@@ -108,7 +121,8 @@ export default {
 	// SetBackgroundColor 0 0 0 255 #000000
   data() {
     return {
-      convertColorText: '',
+      convertHexColorText: '',
+      convertRgbColorText: '',
       poeBackgroundColor: '#F99619',
       poeBorderColor: '#000000',
       poeTextColor: '#000000',
@@ -136,18 +150,49 @@ export default {
 
       return `${r} ${g} ${b} 255 ${hex}`;
     },
-    extractColors(text) {
+    rgbToHex(r, g, b) {
+      const toHex = (value) => {
+        const hex = value.toString(16);
+        return hex.length === 1 ? `0${hex}` : hex;
+      };
+      
+      const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+      return hex.toUpperCase(); // 대문자로 변환
+    },
+    extractHexColors(text) {
       const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
       const matches = text.match(regex) || [];
 
       this.poeTextColor = matches[0] || '';
       this.poeBorderColor = matches[1] || '';
       this.poeBackgroundColor = matches[2] || '';
+    },
+    extractRgbColors(text) {
+      //const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
+      const regex = /Set(?:Text|Border|Background)Color\s+(\d+)\s+(\d+)\s+(\d+)\s+\d+/gm;
+
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        const [, r, g, b] = match;
+        //const rgb = `${r} ${g} ${b}`;
+        const hex = this.rgbToHex(parseInt(r), parseInt(g), parseInt(b));
+
+        if (match[0].includes("TextColor")) {
+          this.poeTextColor = hex;
+        } else if (match[0].includes("BorderColor")) {
+          this.poeBorderColor = hex;
+        } else if (match[0].includes("BackgroundColor")) {
+          this.poeBackgroundColor = hex;
+        }
+      }
     }
   },
   watch: {
-    convertColorText(newText) {
-      this.extractColors(newText);
+    convertHexColorText(newText) {
+      this.extractHexColors(newText);
+    },
+    convertRgbColorText(newText) {
+      this.extractRgbColors(newText);
     }
   },
   computed: {
