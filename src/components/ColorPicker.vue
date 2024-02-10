@@ -135,20 +135,20 @@ export default {
   methods: {
     copyToClipboard() {
       // 클립보드에 복사할 텍스트
-      const _textColor = this.hexToRgba(this.poeTextColor);
-      const _bordrColor = this.hexToRgba(this.poeBorderColor);
-      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor);
+      const _textColor = this.hexToRgba(this.poeTextColor, 255);
+      const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
+      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 240);
       const textToCopy = `    SetTextColor ${_textColor}\n    SetBorderColor ${_bordrColor}\n    SetBackgroundColor ${_backgroundColor}`;
 
       // 클립보드에 텍스트 복사
       this.$copyText(textToCopy);
     },
-    hexToRgba(hex) {
+    hexToRgba(hex, alpha) {
       const r = parseInt(hex.slice(1, 3), 16);
       const g = parseInt(hex.slice(3, 5), 16);
       const b = parseInt(hex.slice(5, 7), 16);
-
-      return `${r} ${g} ${b} 255 ${hex}`;
+      
+      return `${r} ${g} ${b} ${alpha} ${hex}`;
     },
     rgbToHex(r, g, b) {
       const toHex = (value) => {
@@ -197,9 +197,9 @@ export default {
   },
   computed: {
     colorText() {
-      const _textColor = this.hexToRgba(this.poeTextColor);
-      const _bordrColor = this.hexToRgba(this.poeBorderColor);
-      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor);
+      const _textColor = this.hexToRgba(this.poeTextColor, 255);
+      const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
+      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 240);
       return `SetTextColor ${_textColor}\nSetBorderColor ${_bordrColor}\nSetBackgroundColor ${_backgroundColor}`;
     },
     swatchStyle1() {
