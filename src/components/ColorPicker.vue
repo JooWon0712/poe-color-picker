@@ -17,7 +17,7 @@
             <div class="text-center">백그라운드 컬러</div>
             <v-text-field v-model="poeBackgroundColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
               <template v-slot:append>
-                <v-menu v-model="menu1" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                <v-menu v-model="menu1" nudge-bottom="105" nudge-left="-400" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
                     <div :style="swatchStyle1" v-on="on" />
                   </template>
@@ -34,13 +34,13 @@
             <div class="text-center">테두리 컬러</div>
             <v-text-field v-model="poeBorderColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
               <template v-slot:append>
-                <v-menu v-model="menu2" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                <v-menu v-model="menu2" nudge-bottom="105" nudge-left="-150" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
                     <div :style="swatchStyle2" v-on="on" />
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="poeBorderColor" mode="hexa" flat show-swatches/>
+                      <v-color-picker v-model="poeBorderColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -51,7 +51,7 @@
             <div class="text-center">폰트 컬러</div>
             <v-text-field v-model="poeTextColor" v-mask="mask" hide-details class="ma-0 pa-0" solo>
               <template v-slot:append>
-                <v-menu v-model="menu3" top nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
+                <v-menu v-model="menu3" nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
                     <div :style="swatchStyle3" v-on="on" />
                   </template>
@@ -67,6 +67,13 @@
         </v-row>
       </v-container>
 
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-textarea v-model="inputText" label="메모 공간" outlined rows="5"></v-textarea>
+          </v-col>
+        </v-row>
+      </v-container>
       <v-btn @click="copyToClipboard">Copy to Clipboard</v-btn>
 
       <v-container class="container-row" style="width: 600px;">
@@ -107,6 +114,8 @@
           ></v-textarea>
         </v-row>
       </v-container>
+      <div>
+  </div>
     </v-app>
   </v-container>
 
