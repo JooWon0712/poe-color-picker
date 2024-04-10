@@ -6,7 +6,7 @@
         <v-row style="text-align: center; justify-content: center;">
           <div class="VisualUtilityItemDiv"
             v-bind:style="{backgroundColor: poeBackgroundColor, border: '2px solid '+poeBorderColor, color: poeTextColor}">
-            <label class="VisualUtilityItemLabel">서미누기 필터</label>
+            <label class="VisualUtilityItemLabel" >{{itemNameText}}</label>
           </div>
         </v-row>
       </v-container>
@@ -69,12 +69,19 @@
 
       <v-container>
         <v-row>
-          <v-col>
+          <v-col class="col md-6" >
             <v-textarea v-model="inputText" label="메모 공간" outlined rows="5"></v-textarea>
+          </v-col>
+          <v-col class="col md-3">
+            <v-text-field v-model="userInputText" label="아이템 이름 변경" solo outlined></v-text-field>
+          </v-col>
+          <v-col class="col md-3" >
+            <v-btn class="mb-4" @click="copyToClipboard" block>색상 코드 복사</v-btn>
+            <v-btn class="mb-4" @click="captureImage" block>색상 정보 이미지로 저장</v-btn>
+            <v-btn class="mb-4" @click="convertTextReset" block>입력한 색상 정보 초기화</v-btn>
           </v-col>
         </v-row>
       </v-container>
-      <v-btn @click="copyToClipboard">Copy to Clipboard</v-btn>
 
       <v-container class="container-row" style="width: 600px;">
         <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
@@ -89,29 +96,26 @@
         </v-row>
       </v-container>
         
-      <v-container class="container-row" style="width: 600px;">
+      <v-container class="container-row" style="width: 900px;">
         <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-          <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
-          <v-textarea
-            clearable
-            auto-grow
-            clear-icon="mdi-close-circle"
-            label="hex covert"
-            v-model="convertHexColorText"
-          ></v-textarea>
-        </v-row>
-      </v-container>
-
-      <v-container class="container-row" style="width: 600px;">
-        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-          <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
-          <v-textarea
-            clearable
-            auto-grow
-            clear-icon="mdi-close-circle"
-            label="rgb covert"
-            v-model="convertRgbColorText"
-          ></v-textarea>
+          <v-col>
+            <v-textarea
+              clearable
+              auto-grow
+              clear-icon="mdi-close-circle"
+              label="hex covert"
+              v-model="convertHexColorText"
+            ></v-textarea>
+          </v-col>
+          <v-col>
+            <v-textarea
+              clearable
+              auto-grow
+              clear-icon="mdi-close-circle"
+              label="rgb covert"
+              v-model="convertRgbColorText"
+            ></v-textarea>
+          </v-col>
         </v-row>
       </v-container>
       <div>
@@ -124,6 +128,8 @@
 </template>
 
 <script>
+import html2canvas from 'html2canvas'; // html2canvas를 사용하여 HTML 요소를 캡처합니다.
+
 export default {
 	// SetTextColor 249 150 25 255 #F99619
 	// SetBorderColor 136 44 44 255 #882C2C
@@ -138,7 +144,8 @@ export default {
       mask: '!#XXXXXX',
       menu1: false,
       menu2: false,
-      menu3: false
+      menu3: false,
+      userInputText: '' // 사용자가 입력한 텍스트
     };
   },
   methods: {
@@ -194,6 +201,33 @@ export default {
           this.poeBackgroundColor = hex;
         }
       }
+    },
+    captureImage() {
+      // 지정한 색상을 html2canvas를 이용해서 저장합니다.
+      const label = document.querySelector('.VisualUtilityItemLabel'); // 라벨 요소를 선택합니다.
+      const fileName = label ? label.textContent.trim() : 'visual_utility_item'; // 라벨 텍스트를 가져와서 파일 이름으로 지정합니다.
+
+      const element = document.querySelector('.VisualUtilityItemDiv'); // 캡처할 요소를 선택합니다.
+      html2canvas(element).then(canvas => {
+        const image = canvas.toDataURL('image/png'); // 캔버스를 이미지로 변환합니다.
+        const link = document.createElement('a'); // 다운로드 링크를 생성합니다.
+        
+        link.href = image;
+        link.download = `${fileName}.png`; // 이미지 파일의 이름을 지정합니다.
+        link.click(); // 다운로드 링크를 클릭하여 이미지를 저장합니다.
+      });
+    },
+    convertTextReset() {
+      // 입력한 색상 정보를 초기화합니다.
+      this.convertHexColorText = '';
+      this.convertRgbColorText = '';
+
+      // v-color-picker의 값을 초기화
+      this.$nextTick(() => {
+        this.poeBackgroundColor = '#F99619';
+        this.poeBorderColor = '#000000';
+        this.poeTextColor = '#000000';
+      });
     }
   },
   watch: {
@@ -243,6 +277,10 @@ export default {
         borderRadius: menu3 ? '50%' : '4px',
         transition: 'border-radius 200ms ease-in-out'
       }
+    },
+    itemNameText() {
+      // 입력된 텍스트가 있는지 확인하고, 있으면 해당 값 사용, 없으면 기본값 사용
+      return this.userInputText ? this.userInputText : '서미누기 필터';
     }
   },
 };
