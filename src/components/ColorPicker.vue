@@ -70,7 +70,7 @@
       <v-container>
         <v-row>
           <v-col class="col md-6" >
-            <v-textarea v-model="inputText" label="메모 공간" outlined rows="5"></v-textarea>
+            <v-textarea v-model="notePadText" label="메모 공간" outlined rows="5"></v-textarea>
           </v-col>
           <v-col class="col md-3">
             <v-text-field v-model="userInputText" label="아이템 이름 변경" solo outlined></v-text-field>
@@ -146,7 +146,8 @@ export default {
       menu1: false,
       menu2: false,
       menu3: false,
-      userInputText: '' // 사용자가 입력한 텍스트
+      userInputText: '', // 사용자가 입력한 텍스트
+      notePadText: '' //메모공간 텍스트
     };
   },
   methods: {
