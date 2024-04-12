@@ -76,7 +76,8 @@
             <v-text-field v-model="userInputText" label="아이템 이름 변경" solo outlined></v-text-field>
           </v-col>
           <v-col class="col md-3" >
-            <v-btn class="mb-4" @click="copyToClipboard" block>색상 코드 복사</v-btn>
+            <v-btn class="mb-4" @click="copyTextToClipboard" block>색상 코드 클립보드에 복사</v-btn>
+            <v-btn class="mb-4" @click="copyImageToClipboard" block>색상 정보 클립보드에 복사</v-btn>
             <v-btn class="mb-4" @click="captureImage" block>색상 정보 이미지로 저장</v-btn>
             <v-btn class="mb-4" @click="convertTextReset" block>입력한 색상 정보 초기화</v-btn>
           </v-col>
@@ -149,7 +150,7 @@ export default {
     };
   },
   methods: {
-    copyToClipboard() {
+    copyTextToClipboard() {
       // 클립보드에 복사할 텍스트
       const _textColor = this.hexToRgba(this.poeTextColor, 255);
       const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
@@ -158,6 +159,21 @@ export default {
 
       // 클립보드에 텍스트 복사
       this.$copyText(textToCopy);
+    },
+    copyImageToClipboard() {
+      // 이미지를 클립보드에 복사하는 함수
+      // 이미지를 포함하는 요소 선택
+      const element = document.querySelector('.VisualUtilityItemDiv');
+      
+      // html2canvas를 사용하여 선택한 요소를 캡처
+      html2canvas(element).then(canvas => {
+        // 캔버스를 이미지(blob)로 변환
+        canvas.toBlob(blob => {
+          // Clipboard API를 사용하여 클립보드에 이미지 복사
+          const item = new ClipboardItem({ 'image/png': blob });
+          navigator.clipboard.write([item]);
+        });
+      });
     },
     hexToRgba(hex, alpha) {
       const r = parseInt(hex.slice(1, 3), 16);
