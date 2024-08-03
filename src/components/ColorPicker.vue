@@ -5,8 +5,11 @@
       <v-container class="container-custom">
         <v-row style="text-align: center; justify-content: center;">
           <div class="VisualUtilityItemDiv"
-            v-bind:style="{backgroundColor: poeBackgroundColor, border: '2px solid '+poeBorderColor, color: poeTextColor}">
-            <label class="VisualUtilityItemLabel" >{{itemNameText}}</label>
+            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '2px solid ' + poeBorderColor, color: poeTextColor }">
+            <label class="VisualUtilityItemLabel">{{ itemNameText }}</label>
+          </div>
+          <div id="app" style="display: flex; justify-content: center; align-items: center; margin-left: 10px;">
+            <v-btn @click="toggleMode">{{ isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}</v-btn>
           </div>
         </v-row>
       </v-container>
@@ -23,7 +26,8 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="poeBackgroundColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
+                      <v-color-picker v-model="poeBackgroundColor" mode="hexa" flat show-swatches
+                        swatches-max-height="400px" />
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -40,7 +44,8 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="poeBorderColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
+                      <v-color-picker v-model="poeBorderColor" mode="hexa" flat show-swatches
+                        swatches-max-height="400px" />
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -57,7 +62,8 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="poeTextColor" mode="hexa" flat show-swatches swatches-max-height="400px"/>
+                      <v-color-picker v-model="poeTextColor" mode="hexa" flat show-swatches
+                        swatches-max-height="400px" />
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -69,17 +75,30 @@
 
       <v-container>
         <v-row>
-          <v-col class="col md-6" >
-            <v-textarea v-model="notePadText" label="메모 공간" outlined rows="5"></v-textarea>
+          <v-col class="col md-6">
+            <v-textarea class="custom-textarea" v-model="notePadText" label="메모 공간" outlined rows="5"></v-textarea>
           </v-col>
           <v-col class="col md-3">
             <v-text-field v-model="userInputText" label="아이템 이름 변경" solo outlined></v-text-field>
           </v-col>
-          <v-col class="col md-3" >
-            <v-btn class="mb-4" @click="copyTextToClipboard" block>색상 코드 클립보드에 복사</v-btn>
-            <v-btn class="mb-4" @click="copyImageToClipboard" block>색상 정보 클립보드에 복사</v-btn>
+          <v-col class="col md-3">
+            <v-btn class="mb-4" @click="copyTextToClipboard" block>색상 필터 코드로 복사</v-btn>
+            <v-btn class="mb-4" @click="copyImageToClipboard" block>색상 정보 이미지로 복사</v-btn>
             <v-btn class="mb-4" @click="captureImage" block>색상 정보 이미지로 저장</v-btn>
             <v-btn class="mb-4" @click="convertTextReset" block>입력한 색상 정보 초기화</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <v-container class="container-row" style="width: 900px;">
+        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
+          <v-col>
+            <v-textarea class="custom-textarea" clearable auto-grow clear-icon="mdi-close-circle" label="hex convert"
+              v-model="convertHexColorText"></v-textarea>
+          </v-col>
+          <v-col>
+            <v-textarea class="custom-textarea" clearable auto-grow clear-icon="mdi-close-circle" label="rgb convert"
+              v-model="convertRgbColorText"></v-textarea>
           </v-col>
         </v-row>
       </v-container>
@@ -87,54 +106,25 @@
       <v-container class="container-row" style="width: 600px;">
         <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
           <!-- <p style="text-align: left; white-space: pre;">&nbsp;&nbsp;&nbsp;&nbsp;SetTextColor {{hexToRgba(poeTextColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBorderColor {{hexToRgba(poeBorderColor)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;SetBackgroundColor {{hexToRgba(poeBackgroundColor)}}</p> -->
-          <v-textarea
-            clearable
-            auto-grow
-            clear-icon="mdi-close-circle"
-            v-model="colorText"
-            disabled
-          ></v-textarea>
-        </v-row>
-      </v-container>
-        
-      <v-container class="container-row" style="width: 900px;">
-        <v-row style="display: flex; text-align: center; justify-content: center; margin: 40px;">
-          <v-col>
-            <v-textarea
-              clearable
-              auto-grow
-              clear-icon="mdi-close-circle"
-              label="hex covert"
-              v-model="convertHexColorText"
-            ></v-textarea>
-          </v-col>
-          <v-col>
-            <v-textarea
-              clearable
-              auto-grow
-              clear-icon="mdi-close-circle"
-              label="rgb covert"
-              v-model="convertRgbColorText"
-            ></v-textarea>
-          </v-col>
+          <v-textarea clearable auto-grow clear-icon="mdi-close-circle" v-model="colorText" disabled></v-textarea>
         </v-row>
       </v-container>
       <div>
-  </div>
+      </div>
     </v-app>
   </v-container>
 
-  
-  
+
+
 </template>
 
 <script>
 import html2canvas from 'html2canvas'; // html2canvas를 사용하여 HTML 요소를 캡처합니다.
 
 export default {
-	// SetTextColor 249 150 25 255 #F99619
-	// SetBorderColor 136 44 44 255 #882C2C
-	// SetBackgroundColor 0 0 0 255 #000000
+  // SetTextColor 249 150 25 255 #F99619
+  // SetBorderColor 136 44 44 255 #882C2C
+  // SetBackgroundColor 0 0 0 255 #000000
   data() {
     return {
       convertHexColorText: '',
@@ -147,8 +137,17 @@ export default {
       menu2: false,
       menu3: false,
       userInputText: '', // 사용자가 입력한 텍스트
-      notePadText: '' //메모공간 텍스트
+      notePadText: '', //메모공간 텍스트,
+      isDarkMode: false
     };
+  },
+  mounted() {
+    // Check local storage for mode preference
+    const savedMode = localStorage.getItem('mode');
+    if (savedMode) {
+      this.isDarkMode = savedMode === 'dark';
+      document.body.classList.add(savedMode === 'dark' ? 'dark-mode' : 'light-mode');
+    }
   },
   methods: {
     copyTextToClipboard() {
@@ -165,7 +164,7 @@ export default {
       // 이미지를 클립보드에 복사하는 함수
       // 이미지를 포함하는 요소 선택
       const element = document.querySelector('.VisualUtilityItemDiv');
-      
+
       // html2canvas를 사용하여 선택한 요소를 캡처
       html2canvas(element).then(canvas => {
         // 캔버스를 이미지(blob)로 변환
@@ -180,7 +179,7 @@ export default {
       const r = parseInt(hex.slice(1, 3), 16);
       const g = parseInt(hex.slice(3, 5), 16);
       const b = parseInt(hex.slice(5, 7), 16);
-      
+
       return `${r} ${g} ${b} ${alpha} ${hex}`;
     },
     rgbToHex(r, g, b) {
@@ -188,18 +187,29 @@ export default {
         const hex = value.toString(16);
         return hex.length === 1 ? `0${hex}` : hex;
       };
-      
+
       const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
       return hex.toUpperCase(); // 대문자로 변환
     },
     extractHexColors(text) {
+      // 첫 번째 줄을 추출
+      const firstLine = text.split('\n')[0];
+
+      // 첫 번째 줄이 #으로 시작하면 userInputText 변수에 할당
+      if (firstLine.startsWith('#')) {
+        this.userInputText = firstLine;
+      }
+
+      // Hex 색상을 추출하는 정규 표현식
       const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
       const matches = text.match(regex) || [];
 
+      // 추출된 색상 값을 각 변수에 할당
       this.poeTextColor = matches[0] || '';
       this.poeBorderColor = matches[1] || '';
       this.poeBackgroundColor = matches[2] || '';
-    },
+    }
+    ,
     extractRgbColors(text) {
       //const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
       const regex = /Set(?:Text|Border|Background)Color\s+(\d+)\s+(\d+)\s+(\d+)\s+\d+/gm;
@@ -228,7 +238,7 @@ export default {
       html2canvas(element).then(canvas => {
         const image = canvas.toDataURL('image/png'); // 캔버스를 이미지로 변환합니다.
         const link = document.createElement('a'); // 다운로드 링크를 생성합니다.
-        
+
         link.href = image;
         link.download = `${fileName}.png`; // 이미지 파일의 이름을 지정합니다.
         link.click(); // 다운로드 링크를 클릭하여 이미지를 저장합니다.
@@ -245,6 +255,18 @@ export default {
         this.poeBorderColor = '#000000';
         this.poeTextColor = '#000000';
       });
+    },
+    toggleMode() {
+      this.isDarkMode = !this.isDarkMode;
+      if (this.isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('mode', 'dark');
+      } else {
+        document.body.classList.add('light-mode');
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('mode', 'light');
+      }
     }
   },
   watch: {
@@ -299,38 +321,73 @@ export default {
       // 입력된 텍스트가 있는지 확인하고, 있으면 해당 값 사용, 없으면 기본값 사용
       return this.userInputText ? this.userInputText : '서미누기 필터';
     }
-  },
+  }
 };
 </script>
 
 <style>
-  
-  .container {
-    max-width: 400px;
-    justify-content: center;
-    display: flex;
-    margin: 40px;
-  }
+.container {
+  max-width: 400px;
+  justify-content: center;
+  display: flex;
+  margin: 40px;
+}
 
-  .container-row {
-    max-width: 250px;
-    justify-content: center;
-    display: flex;
-    margin: 0px 40px;
-  }
+.container-row {
+  max-width: 250px;
+  justify-content: center;
+  display: flex;
+  margin: 0px 40px;
+}
 
- .VisualUtilityItemDiv {
-    display: inline-flex;
-    background-color: #adff2f;
-    border: 1px solid pink;
-    padding: 10px;
-    position: relative;
-    text-align: center;
-    font-family: GeneralFont;
- }
+.VisualUtilityItemDiv {
+  display: inline-flex;
+  background-color: #adff2f;
+  border: 1px solid pink;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  font-family: GeneralFont;
+}
 
- .VisualUtilityItemLabel {
-    font-size: 30px;
-    white-space: nowrap;
-  }
+.VisualUtilityItemLabel {
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+/* You can place the dark mode and light mode CSS here as well */
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* v-application--wrap 스타일 추가 */
+body.dark-mode .v-application--wrap {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.light-mode .v-application--wrap {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* v-textarea 내부 텍스트 색상 설정 */
+.custom-textarea {
+  transition: color 0.3s;
+}
+
+body.dark-mode .custom-textarea .v-input__control .v-input__slot input,
+body.dark-mode .custom-textarea .v-input__control .v-input__slot textarea {
+  color: #ffffff;
+}
 </style>
