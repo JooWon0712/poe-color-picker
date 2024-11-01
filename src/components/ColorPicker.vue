@@ -2,11 +2,86 @@
 
   <v-container>
     <v-app>
-      <v-container class="container-custom">
-        <v-row style="text-align: center; justify-content: center;">
+      <v-container class="container-custom itemFilterOfficialInfo">
+        <v-row style="margin: 4px;">
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#C8C8C8', marginRight: '10px' }"
+            v-clipboard:copy="'C8C8C8'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>일반 아이템</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#8888FF', marginRight: '10px' }"
+            v-clipboard:copy="'8888FF'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>마법 아이템</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#FFFF77', marginRight: '10px' }"
+            v-clipboard:copy="'FFFF77'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>희귀 아이템</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AF6025', marginRight: '10px' }"
+            v-clipboard:copy="'AF6025'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>고유 아이템</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#4AE63A', marginRight: '10px' }"
+            v-clipboard:copy="'4AE63A'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>퀘스트 아이템</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#0EBAFF', marginRight: '10px' }"
+            v-clipboard:copy="'0EBAFF'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>점술 카드</label>
+          </div>
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#1BA29B', marginRight: '10px' }"
+            v-clipboard:copy="'1BA29B'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>스킬 젬</label>
+          </div>
+          <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AA9E82' }"
+          v-clipboard:copy="'AA9E82'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>화폐</label>
+          </div>
+        </v-row>
+        <!-- Snackbar for success message -->
+        <v-snackbar v-model="successSnackbar" color="green" timeout="1000">
+          {{ successMessage }}
+          <template #action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="successSnackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+
+        <!-- Snackbar for error message -->
+        <v-snackbar v-model="errorSnackbar" color="red" timeout="1000">
+          {{ errorMessage }}
+          <template #action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="errorSnackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </v-container>
+
+      <v-container class="container-custom itemFilterInfo">
+        <v-row style="text-align: center; justify-content: center; margin: 4px;">
           <div class="VisualUtilityItemDiv"
-            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '2px solid ' + poeBorderColor, color: poeTextColor }">
+            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: poeTextColor, marginRight: '10px' }">
             <label class="VisualUtilityItemLabel">{{ itemNameText }}</label>
+          </div>
+          <div class="VisualUtilityItemDiv"
+            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#C8C8C8', marginRight: '10px' }">
+            <label class="VisualUtilityItemLabel">일반 아이템</label>
+          </div>
+          <div class="VisualUtilityItemDiv"
+            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#8888FF', marginRight: '10px' }">
+            <label class="VisualUtilityItemLabel">마법 아이템</label>
+          </div>
+          <div class="VisualUtilityItemDiv"
+            v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#FFFF77' }">
+            <label class="VisualUtilityItemLabel">희귀 아이템</label>
           </div>
           <div id="app" style="display: flex; justify-content: center; align-items: center; margin-left: 10px;">
             <v-btn @click="toggleMode">{{ isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}</v-btn>
@@ -22,7 +97,7 @@
               <template v-slot:append>
                 <v-menu v-model="menu1" nudge-bottom="105" nudge-left="-400" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
-                    <div :style="swatchStyle1" v-on="on" />
+                    <div :style="swatchStyle1" v-on="on" ></div>
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
@@ -40,7 +115,7 @@
               <template v-slot:append>
                 <v-menu v-model="menu2" nudge-bottom="105" nudge-left="-150" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
-                    <div :style="swatchStyle2" v-on="on" />
+                    <div :style="swatchStyle2" v-on="on"></div>
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
@@ -58,7 +133,7 @@
               <template v-slot:append>
                 <v-menu v-model="menu3" nudge-bottom="105" nudge-left="16" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
-                    <div :style="swatchStyle3" v-on="on" />
+                    <div :style="swatchStyle3" v-on="on"></div>
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
@@ -138,7 +213,11 @@ export default {
       menu3: false,
       userInputText: '', // 사용자가 입력한 텍스트
       notePadText: '', //메모공간 텍스트,
-      isDarkMode: false
+      isDarkMode: false,
+      successSnackbar: false, // 성공 스낵바 상태
+      errorSnackbar: false, // 실패 스낵바 상태
+      successMessage: '', // 성공 메시지
+      errorMessage: '' // 실패 메시지
     };
   },
   mounted() {
@@ -267,6 +346,14 @@ export default {
         document.body.classList.remove('dark-mode');
         localStorage.setItem('mode', 'light');
       }
+    },
+    onCopySuccess() {
+      this.successMessage = '복사 성공'; // 성공 메시지 설정
+      this.successSnackbar = true; // 성공 스낵바 표시
+    },
+    onCopyError() {
+      this.errorMessage = '복사 실패!'; // 실패 메시지 설정
+      this.errorSnackbar = true; // 실패 스낵바 표시
     }
   },
   watch: {
@@ -355,36 +442,26 @@ export default {
   white-space: nowrap;
 }
 
-/* You can place the dark mode and light mode CSS here as well */
-body {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-body.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
-}
-
-body.light-mode {
-  background-color: #ffffff;
-  color: #000000;
+/* 기본 스타일 */
+body,
+.itemFilterInfo {
+  margin: 10px;
+  padding: 10px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  /* 배경색과 텍스트 색상에 대한 애니메이션 추가 */
 }
 
 /* v-application--wrap 스타일 추가 */
-body.dark-mode .v-application--wrap {
+body.dark-mode .itemFilterInfo {
   background-color: #121212;
   color: #ffffff;
 }
 
-body.light-mode .v-application--wrap {
+body.light-mode .itemFilterInfo {
   background-color: #ffffff;
   color: #000000;
 }
 
-/* v-textarea 내부 텍스트 색상 설정 */
-.custom-textarea {
-  transition: color 0.3s;
-}
 
 body.dark-mode .custom-textarea .v-input__control .v-input__slot input,
 body.dark-mode .custom-textarea .v-input__control .v-input__slot textarea {
