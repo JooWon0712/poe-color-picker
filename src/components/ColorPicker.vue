@@ -2,7 +2,7 @@
 
   <v-container>
     <v-app>
-      <v-container class="container-custom itemFilterOfficialInfo">
+      <v-container class="itemFilterOfficialInfo" style="margin: 4px;">
         <v-row style="margin: 4px;">
           <div
             v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#C8C8C8', marginRight: '10px' }"
@@ -39,9 +39,17 @@
             v-clipboard:copy="'1BA29B'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
             <label>스킬 젬</label>
           </div>
-          <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AA9E82' }"
+          <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AA9E82', marginRight: '10px' }"
           v-clipboard:copy="'AA9E82'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
             <label>화폐</label>
+          </div>
+        </v-row>
+      </v-container>
+      <v-container class="itemFilterSeoMinugiInfo" style="margin: 4px;">
+        <v-row style="margin: 4px;">
+          <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#D5245F' }"
+          v-clipboard:copy="'D5245F'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            <label>서미누기-타락템 테투리</label>
           </div>
         </v-row>
         <!-- Snackbar for success message -->
@@ -83,7 +91,7 @@
             v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#FFFF77' }">
             <label class="VisualUtilityItemLabel">희귀 아이템</label>
           </div>
-          <div id="app" style="display: flex; justify-content: center; align-items: center; margin-left: 10px;">
+          <div id="app" style="display: flex; justify-content: center; align-items: center; margin: 10px;">
             <v-btn @click="toggleMode">{{ isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}</v-btn>
           </div>
         </v-row>
@@ -460,11 +468,5 @@ body.dark-mode .itemFilterInfo {
 body.light-mode .itemFilterInfo {
   background-color: #ffffff;
   color: #000000;
-}
-
-
-body.dark-mode .custom-textarea .v-input__control .v-input__slot input,
-body.dark-mode .custom-textarea .v-input__control .v-input__slot textarea {
-  color: #ffffff;
 }
 </style>
