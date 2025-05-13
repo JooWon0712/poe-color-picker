@@ -39,8 +39,9 @@
             v-clipboard:copy="'1BA29B'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
             <label>스킬 젬</label>
           </div>
-          <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AA9E82', marginRight: '10px' }"
-          v-clipboard:copy="'AA9E82'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+          <div
+            v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#AA9E82', marginRight: '10px' }"
+            v-clipboard:copy="'AA9E82'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
             <label>화폐</label>
           </div>
         </v-row>
@@ -48,7 +49,7 @@
       <v-container class="itemFilterSeoMinugiInfo" style="margin: 4px;">
         <v-row style="margin: 4px;">
           <div v-bind:style="{ backgroundColor: '#000000', border: '4px solid #000000', color: '#D5245F' }"
-          v-clipboard:copy="'D5245F'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
+            v-clipboard:copy="'D5245F'" v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">
             <label>서미누기-타락템 테투리</label>
           </div>
         </v-row>
@@ -81,15 +82,15 @@
           </div>
           <div class="VisualUtilityItemDiv"
             v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#C8C8C8', marginRight: '10px' }">
-            <label class="VisualUtilityItemLabel">일반 아이템</label>
+            <label class="VisualUtilityItemLabel">{{ itemNameText }} (일반 등급)</label>
           </div>
           <div class="VisualUtilityItemDiv"
             v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#8888FF', marginRight: '10px' }">
-            <label class="VisualUtilityItemLabel">마법 아이템</label>
+            <label class="VisualUtilityItemLabel">{{ itemNameText }} (마법 등급)</label>
           </div>
           <div class="VisualUtilityItemDiv"
             v-bind:style="{ backgroundColor: poeBackgroundColor, border: '4px solid ' + poeBorderColor, color: '#FFFF77' }">
-            <label class="VisualUtilityItemLabel">희귀 아이템</label>
+            <label class="VisualUtilityItemLabel">{{ itemNameText }} (희귀 등급)</label>
           </div>
           <div id="app" style="display: flex; justify-content: center; align-items: center; margin: 10px;">
             <v-btn @click="toggleMode">{{ isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}</v-btn>
@@ -105,7 +106,7 @@
               <template v-slot:append>
                 <v-menu v-model="menu1" nudge-bottom="105" nudge-left="-400" :close-on-content-click="false">
                   <template v-slot:activator="{ on }">
-                    <div :style="swatchStyle1" v-on="on" ></div>
+                    <div :style="swatchStyle1" v-on="on"></div>
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
@@ -241,7 +242,7 @@ export default {
       // 클립보드에 복사할 텍스트
       const _textColor = this.hexToRgba(this.poeTextColor, 255);
       const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
-      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 240);
+      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 255);
       const textToCopy = `    SetTextColor ${_textColor}\n    SetBorderColor ${_bordrColor}\n    SetBackgroundColor ${_backgroundColor}`;
 
       // 클립보드에 텍스트 복사
@@ -284,11 +285,14 @@ export default {
 
       // 첫 번째 줄이 #으로 시작하면 userInputText 변수에 할당
       if (firstLine.startsWith('#')) {
-        this.userInputText = firstLine;
+        this.userInputText = firstLine.replace(/^#\s*/, '');
       }
 
       // Hex 색상을 추출하는 정규 표현식
-      const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
+      // const regex = /#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
+
+      // 특정 텍스트를 제외하는 정규 표현식
+      const regex = /#(?!default\b|starter\b|early\b|mid\b|end\b|highEnd\b|uber\b)([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/g;
       const matches = text.match(regex) || [];
 
       // 추출된 색상 값을 각 변수에 할당
@@ -317,106 +321,107 @@ export default {
       }
     },
     captureImage() {
-      // 지정한 색상을 html2canvas를 이용해서 저장합니다.
-      const label = document.querySelector('.VisualUtilityItemLabel'); // 라벨 요소를 선택합니다.
-      const fileName = label ? label.textContent.trim() : 'visual_utility_item'; // 라벨 텍스트를 가져와서 파일 이름으로 지정합니다.
+      const elements = document.querySelectorAll('.VisualUtilityItemDiv');
 
-      const element = document.querySelector('.VisualUtilityItemDiv'); // 캡처할 요소를 선택합니다.
-      html2canvas(element).then(canvas => {
-        const image = canvas.toDataURL('image/png'); // 캔버스를 이미지로 변환합니다.
-        const link = document.createElement('a'); // 다운로드 링크를 생성합니다.
+      elements.forEach((element, index) => {
+        const label = element.querySelector('.VisualUtilityItemLabel');
+        const fileName = label ? label.textContent.trim() : `visual_utility_item_${index + 1}`;
 
-        link.href = image;
-        link.download = `${fileName}.png`; // 이미지 파일의 이름을 지정합니다.
-        link.click(); // 다운로드 링크를 클릭하여 이미지를 저장합니다.
+        html2canvas(element).then(canvas => {
+          const image = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = image;
+          link.download = `${fileName}.png`;
+          link.click();
+        });
       });
     },
-    convertTextReset() {
-      // 입력한 색상 정보를 초기화합니다.
-      this.convertHexColorText = '';
-      this.convertRgbColorText = '';
+  convertTextReset() {
+    // 입력한 색상 정보를 초기화합니다.
+    this.convertHexColorText = '';
+    this.convertRgbColorText = '';
 
-      // v-color-picker의 값을 초기화
-      this.$nextTick(() => {
-        this.poeBackgroundColor = '#F99619';
-        this.poeBorderColor = '#000000';
-        this.poeTextColor = '#000000';
-      });
-    },
-    toggleMode() {
-      this.isDarkMode = !this.isDarkMode;
-      if (this.isDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.body.classList.remove('light-mode');
-        localStorage.setItem('mode', 'dark');
-      } else {
-        document.body.classList.add('light-mode');
-        document.body.classList.remove('dark-mode');
-        localStorage.setItem('mode', 'light');
-      }
-    },
-    onCopySuccess() {
-      this.successMessage = '복사 성공'; // 성공 메시지 설정
-      this.successSnackbar = true; // 성공 스낵바 표시
-    },
-    onCopyError() {
-      this.errorMessage = '복사 실패!'; // 실패 메시지 설정
-      this.errorSnackbar = true; // 실패 스낵바 표시
+    // v-color-picker의 값을 초기화
+    this.$nextTick(() => {
+      this.poeBackgroundColor = '#F99619';
+      this.poeBorderColor = '#000000';
+      this.poeTextColor = '#000000';
+    });
+  },
+  toggleMode() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+      localStorage.setItem('mode', 'dark');
+    } else {
+      document.body.classList.add('light-mode');
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('mode', 'light');
     }
   },
-  watch: {
-    convertHexColorText(newText) {
-      this.extractHexColors(newText);
-    },
-    convertRgbColorText(newText) {
-      this.extractRgbColors(newText);
-    }
+  onCopySuccess() {
+    this.successMessage = '복사 성공'; // 성공 메시지 설정
+    this.successSnackbar = true; // 성공 스낵바 표시
   },
-  computed: {
-    colorText() {
-      const _textColor = this.hexToRgba(this.poeTextColor, 255);
-      const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
-      const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 240);
-      return `SetTextColor ${_textColor}\nSetBorderColor ${_bordrColor}\nSetBackgroundColor ${_backgroundColor}`;
-    },
-    swatchStyle1() {
-      const { poeBackgroundColor, menu1 } = this
-      return {
-        backgroundColor: poeBackgroundColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        borderRadius: menu1 ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
-    },
-    swatchStyle2() {
-      const { poeBorderColor, menu2 } = this
-      return {
-        backgroundColor: poeBorderColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        borderRadius: menu2 ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
-    },
-    swatchStyle3() {
-      const { poeTextColor, menu3 } = this
-      return {
-        backgroundColor: poeTextColor,
-        cursor: 'pointer',
-        height: '30px',
-        width: '30px',
-        borderRadius: menu3 ? '50%' : '4px',
-        transition: 'border-radius 200ms ease-in-out'
-      }
-    },
-    itemNameText() {
-      // 입력된 텍스트가 있는지 확인하고, 있으면 해당 값 사용, 없으면 기본값 사용
-      return this.userInputText ? this.userInputText : '서미누기 필터';
-    }
+  onCopyError() {
+    this.errorMessage = '복사 실패!'; // 실패 메시지 설정
+    this.errorSnackbar = true; // 실패 스낵바 표시
   }
+},
+watch: {
+  convertHexColorText(newText) {
+    this.extractHexColors(newText);
+  },
+  convertRgbColorText(newText) {
+    this.extractRgbColors(newText);
+  }
+},
+computed: {
+  colorText() {
+    const _textColor = this.hexToRgba(this.poeTextColor, 255);
+    const _bordrColor = this.hexToRgba(this.poeBorderColor, 255);
+    const _backgroundColor = this.hexToRgba(this.poeBackgroundColor, 255);
+    return `SetTextColor ${_textColor}\nSetBorderColor ${_bordrColor}\nSetBackgroundColor ${_backgroundColor}`;
+  },
+  swatchStyle1() {
+    const { poeBackgroundColor, menu1 } = this
+    return {
+      backgroundColor: poeBackgroundColor,
+      cursor: 'pointer',
+      height: '30px',
+      width: '30px',
+      borderRadius: menu1 ? '50%' : '4px',
+      transition: 'border-radius 200ms ease-in-out'
+    }
+  },
+  swatchStyle2() {
+    const { poeBorderColor, menu2 } = this
+    return {
+      backgroundColor: poeBorderColor,
+      cursor: 'pointer',
+      height: '30px',
+      width: '30px',
+      borderRadius: menu2 ? '50%' : '4px',
+      transition: 'border-radius 200ms ease-in-out'
+    }
+  },
+  swatchStyle3() {
+    const { poeTextColor, menu3 } = this
+    return {
+      backgroundColor: poeTextColor,
+      cursor: 'pointer',
+      height: '30px',
+      width: '30px',
+      borderRadius: menu3 ? '50%' : '4px',
+      transition: 'border-radius 200ms ease-in-out'
+    }
+  },
+  itemNameText() {
+    // 입력된 텍스트가 있는지 확인하고, 있으면 해당 값 사용, 없으면 기본값 사용
+    return this.userInputText ? this.userInputText : '서미누기 필터';
+  }
+}
 };
 </script>
 
