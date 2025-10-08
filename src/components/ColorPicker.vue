@@ -164,6 +164,7 @@
                     </v-col>
                     <v-col class="col md-3">
                         <v-btn class="mb-4" @click="copyTextToClipboard" block>색상 필터 코드로 복사</v-btn>
+                        <v-btn class="mb-4" @click="copyColorInfo" block>색상 정보 복사(Pricer 버전)</v-btn>
                         <v-btn class="mb-4" @click="copyImageToClipboard" block>색상 정보 이미지로 복사</v-btn>
                         <v-btn class="mb-4" @click="captureImage" block>색상 정보 이미지로 저장</v-btn>
                         <v-btn class="mb-4" @click="convertTextReset" block>입력한 색상 정보 초기화</v-btn>
@@ -245,6 +246,20 @@ export default {
 
             // 클립보드에 텍스트 복사
             this.$copyText(textToCopy);
+        },
+        copyColorInfo() {
+            const textColor = this.hexToRgba(this.poeTextColor, 255);
+            const borderColor = this.hexToRgba(this.poeBorderColor, 255);
+            const backgroundColor = this.hexToRgba(this.poeBackgroundColor, 255);
+            const textToCopy = `        "text": "${textColor}",
+        "border": "${borderColor}",
+        "background": "${backgroundColor}"`;
+
+            this.$copyText(textToCopy).then(() => {
+                this.onCopySuccess();
+            }, () => {
+                this.onCopyError();
+            });
         },
         copyImageToClipboard() {
             // 이미지를 클립보드에 복사하는 함수
